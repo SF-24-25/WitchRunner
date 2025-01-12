@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
     bool alive = true;
 
-    public float speed = 5f;
+    public float speed = 5f; // Initial speed
     public Rigidbody rb;
     float horizontalInput;
     public float horizontalMultiplier;
     public float minX = -2.5f; // Minimum x position
     public float maxX = 2.5f;  // Maximum x position
+
+    public float speedIncreaseRate = 1f; // Speed increase rate per second
 
     private void FixedUpdate()
     {
@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+
+        // Increase speed over time
+        speed += speedIncreaseRate * Time.fixedDeltaTime;
 
         // Calculate movement
         Vector3 forwardMove = speed * Time.fixedDeltaTime * transform.forward;
