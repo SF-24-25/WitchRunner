@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float minX = -2.5f; // Minimum x position
     public float maxX = 2.5f;  // Maximum x position
 
-    public float speedIncreaseRate = 1f; // Speed increase rate per second
+    public float speedIncreaseRate = 20f; // Speed increase rate per second
 
     private void FixedUpdate()
     {
