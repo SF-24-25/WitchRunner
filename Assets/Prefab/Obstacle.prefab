@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 7676520178853785721}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: 0}
-  m_LocalScale: {x: 1.6666666, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3807166, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 809006501432837681}
@@ -98,8 +98,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.39, y: 1, z: 0.55}
-  m_Center: {x: -0.03, y: 0, z: -0.4}
+  m_Size: {x: 0.23, y: 1, z: 0.17}
+  m_Center: {x: -0.08, y: 0, z: -0.37}
 --- !u!1001 &974103233350387134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -168,6 +168,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: obstacle
       objectReference: {fileID: 0}
+    - target: {fileID: 486000197230308027, guid: daf569294081d3942a9bf1e30814f5b5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ebdbab517843fdf4d8eb162a864e3787, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
