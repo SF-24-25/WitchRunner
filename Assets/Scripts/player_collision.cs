@@ -34,7 +34,7 @@ public class player_collision : MonoBehaviour
         if (other.CompareTag("obstacle"))
         {
             // Restart the current scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
         }
     }
 }

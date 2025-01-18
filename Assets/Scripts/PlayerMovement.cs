@@ -5,6 +5,10 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
+    Vector2 firstPressPos;
+    Vector2 secondPressPos;
+    Vector2 currentSwipe;
+
     bool alive = true;
 
     public Button LeftButton;  // Assign via Inspector
@@ -13,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float speed = 5f; // Initial speed
     public Rigidbody rb;
     float horizontalInput=0f;
+    float horizontalInput2 = 0f;
     public float horizontalMultiplier;
     public float minX = -2.5f; // Minimum x position
     public float maxX = 2.5f;  // Maximum x position
@@ -44,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
             horizontalInput = Mathf.SmoothDamp(horizontalInput, 0f, ref smoothVelocity, smoothTime);
 
         horizontalInput = Mathf.Clamp(horizontalInput, -1, 1);
-
+        horizontalInput2 = Input.GetAxis("Horizontal");
         // Use the horizontalInput value for 
     }
 
@@ -55,11 +60,11 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         // Increase speed over time
-        speed += speedIncreaseRate/35f ;
+        speed += speedIncreaseRate/20f ;
 
         // Calculate movement
         Vector3 forwardMove = speed * Time.fixedDeltaTime * transform.forward;
-        Vector3 horizontalMove = horizontalInput * horizontalMultiplier * speed * Time.fixedDeltaTime * transform.right;
+        Vector3 horizontalMove = (horizontalInput+horizontalInput2) * horizontalMultiplier * speed * Time.fixedDeltaTime * transform.right;
 
         // Combine forward and horizontal movement
         Vector3 newPosition = rb.position + forwardMove + horizontalMove;
@@ -71,11 +76,11 @@ public class PlayerMovement : MonoBehaviour
         rb.MovePosition(newPosition);
 
         // Visual rotation based on horizontal input
-        if (horizontalInput != 0)
+        if (horizontalInput != 0 || horizontalInput2!=0 )
         {
-            rb.rotation = Quaternion.Euler(0, 0, -horizontalInput * 30);
+            rb.rotation = Quaternion.Euler(0, 0, -(horizontalInput+horizontalInput2) * 30);
         }
-        if(horizontalInput == 0)
+        if(horizontalInput == 0 && horizontalInput2 == 0)
         {
             rb.rotation = Quaternion.Euler(0, 0, 0);
         }
@@ -118,5 +123,53 @@ public class PlayerMovement : MonoBehaviour
         };
         pointerUpEntry.callback.AddListener((data) => onPointerUp());
         trigger.triggers.Add(pointerUpEntry);
+    }
+    public void Swipe()
+    {
+        if (Input.touches.Length > 0)
+        {
+            Touch t = Input.GetTouch(0);
+            if (t.phase == TouchPhase.Began)
+            {
+                //save began touch 2d point
+                firstPressPos = new Vector2(t.position.x, t.position.y);
+            }
+            if (t.phase == TouchPhase.Ended)
+            {
+                //save ended touch 2d point
+                secondPressPos = new Vector2(t.position.x, t.position.y);
+
+                //create vector from the two points
+                currentSwipe = new Vector3(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+
+                //normalize the 2d vector
+                currentSwipe.Normalize();
+
+                //swipe upwards
+                if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+		     {
+                    Debug.Log("up swipe");
+                }
+                //swipe down
+                if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+		     {
+                    Debug.Log("down swipe");
+                }
+                //swipe left
+                if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+		     {
+                    Debug.Log("left swipe");
+                    Vector3 newposition2 = new Vector3(0, 0, -2);
+                    rb.MovePosition(newposition2);
+                }
+                //swipe right
+                if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+		     {
+                    Debug.Log("right swipe");
+                    Vector3 newposition2 = new Vector3(0, 0, 2);
+                    rb.MovePosition(newposition2);
+                }
+            }
+        }
     }
 }
